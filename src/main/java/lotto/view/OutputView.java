@@ -7,9 +7,6 @@ import lotto.domain.Result;
 import java.util.List;
 
 public class OutputView {
-    public void printInputMessage() {
-        System.out.println(LottoMessage.PURCHASE_MONEY_INPUT);
-    }
 
     public void printIssuedLottoCount(List<Lotto> lottoBundle) {
         Integer lottoCount = lottoBundle.size();

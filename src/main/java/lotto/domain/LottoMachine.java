@@ -1,5 +1,7 @@
 package lotto.domain;
 
+import lotto.LottoConfig;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,8 +9,8 @@ public class LottoMachine {
     private final Money lottoPrice;
     private final NumberGenerator numberGenerator;
 
-    public LottoMachine(Money lottoPrice, NumberGenerator numberGenerator) {
-        this.lottoPrice = lottoPrice;
+    public LottoMachine(NumberGenerator numberGenerator) {
+        this.lottoPrice = new Money(LottoConfig.LOTTO_PRICE);
         this.numberGenerator = numberGenerator;
     }
 

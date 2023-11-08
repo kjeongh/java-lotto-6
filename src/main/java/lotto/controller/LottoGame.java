@@ -1,20 +1,20 @@
 package lotto.controller;
 
 import lotto.domain.*;
+import lotto.view.InputValidator;
 import lotto.view.InputView;
 import lotto.view.OutputView;
 
-import java.io.LineNumberReader;
 import java.util.List;
 
-public class LottoController {
+public class LottoGame {
     private final InputView inputView;
     private final OutputView outputView;
 
     private final LottoMachine lottoMachine;
 
-    public LottoController(LottoMachine lottoMachine) {
-        this.inputView = new InputView();
+    public LottoGame(LottoMachine lottoMachine) {
+        this.inputView = new InputView(new InputValidator());
         this.outputView = new OutputView();
         this.lottoMachine = lottoMachine;
     }
@@ -22,12 +22,9 @@ public class LottoController {
     public void startGame() {
 
         Money purchaseMoney = getMoney();
-        outputView.printInputMessage();
 
         List<Lotto> lottoBundle = lottoMachine.buyLotto(purchaseMoney);
-
-        outputView.printIssuedLottoCount(lottoBundle);
-        outputView.printIssuedLottoBundle(lottoBundle);
+        printIssuedLotto(lottoBundle);
 
         WinLotto winLotto = getWinLotto();
 
@@ -37,7 +34,8 @@ public class LottoController {
     }
 
     private Money getMoney() {
-        return inputView.readPurchaceMoney();
+        Money purchaseMoney = inputView.readMoney();
+        return purchaseMoney;
     }
 
     private void printIssuedLotto(List<Lotto> lottoBundle) {

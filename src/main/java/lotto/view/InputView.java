@@ -2,25 +2,30 @@ package lotto.view;
 
 import camp.nextstep.edu.missionutils.Console;
 import lotto.domain.Money;
-import lotto.error.InvalidPurchaseException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class InputView {
+    private final InputValidator inputValidator;
 
     private static final String LOTTO_NUMS_DELIMITER = ",";
 
-    public Money readPurchaceMoney() {
+    public InputView(InputValidator inputValidator) {
+        this.inputValidator = inputValidator;
+    }
+
+    public Money readMoney() {
         try {
             System.out.println(LottoMessage.PURCHASE_MONEY_INPUT);
-            final String input = Console.readLine();
-            Integer inputNum = Integer.parseInt(input);
-            return new Money(inputNum);
+            String moneyAmount = getInput();
+            inputValidator.validateMoneyInput(moneyAmount);
+
+            return new Money(Integer.parseInt(moneyAmount));
         } catch (Exception e) {
-            System.out.println(ErrorMessage.INVALID_PURCHASE_AMOUNT.getMessage());
-            throw new IllegalArgumentException("[ERROR] 유효한 금액을 입력해주세요.");
+            System.out.println(e.getMessage());
+            return readMoney();
         }
     }
 
@@ -52,6 +57,12 @@ public class InputView {
     private String getInput() {
         String input = Console.readLine();
         return input;
+    }
+
+    private Integer getIntInput() {
+        String input = getInput();
+        inputValidator.validateInteger(input);
+        return Integer.parseInt(input);
     }
 
     private List<String> split(String input) {
